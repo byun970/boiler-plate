@@ -85,4 +85,13 @@ app.get("/api/users/auth", auth, (req, res) => {
   });
 });
 
+app.get("/api/users/logout", auth, async (req, res) => {
+  try {
+    await User.findOneAndUpdate({ _id: req.user._id }, { token: "" }); // Promise 방식 사용
+    return res.status(200).send({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, err });
+  }
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
